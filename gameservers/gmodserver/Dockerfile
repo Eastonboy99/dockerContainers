@@ -14,4 +14,16 @@ WORKDIR /mnt/game
 
 RUN wget -N --no-check-certificate https://gameservermanagers.com/dl/linuxgsm.sh && chmod +x linuxgsm.sh && bash linuxgsm.sh gmodserver
 
+RUN /bin/bash ./gmodserver auto-install
+USER root
+RUN DEBIAN_FRONTEND=noninteractive apt-get install gdb -y
+
+USER gmodserver
+
+# RUN yes | /bin/bash ./gmodserver debug
+RUN /bin/bash ./gmodserver start
+RUN /bin/bash ./gmodserver monitor
+
 ENTRYPOINT ["./gmodserver"]
+
+CMD ["console"]
